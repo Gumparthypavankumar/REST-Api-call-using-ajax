@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Ajax</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        ul
+        {
+            list-style-type: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <button id="button">Get Users</button>
+    <div id="output">
+
+    </div>
+</body>
+<script>
+    document.getElementById('button').addEventListener('click', getusers);
+    function getusers()
+    {
+        // console.log("I am logged");
+        var xhr=new XMLHttpRequest();
+        xhr.open('GET','https://api.github.com/users?_limit=10',true);
+        xhr.onload =function()
+        {
+            if(this.status == 200)
+            {
+                // console.log(this.responseText);
+                let users=JSON.parse(this.responseText);
+                //using es5
+                // console.log(output.length);
+                // var output=
+                // for(let i in users)
+                // {
+                    // console.log(users[i].id);
+                // }
+                    let output='';
+                //using es6
+                users.forEach(function(value,index){
+                    // console.log(value.id+" "+index+" "+value.login);
+                    output+='<ul>'+
+                    '<li><img src='+value.avatar_url+'width=100 height=90>'+'</li>'+
+                    '<li>ID:'+value.id+'</li>'+
+                    '<li>Name:'+value.login+'</li>'+
+                    '</ul>'             
+                });
+                document.getElementById('output').innerHTML=output;
+            }
+        }
+        xhr.error =function()
+        {
+            console.log("Error");
+        }
+        xhr.send();
+    }
+</script>
+</html>
